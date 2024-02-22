@@ -50,7 +50,7 @@ bool isGreaterThan(double x, int y){
 * @return string
 */
 
-string select(const string& func_type){
+string select(string func_type){
     if (func_type == "sum") {
         return "The sum is ";
     } else if (func_type == "division") {
