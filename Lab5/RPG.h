@@ -1,6 +1,6 @@
 #ifndef RPG_H
 #define RPG_H
-
+using namespace std;
 #include <string>
 
 const int SKILL_SIZE = 2;
@@ -9,28 +9,28 @@ class RPG {
     public: 
     //constructors
     RPG();
-    RPG(std::string name, int health, int streanght, int defense, std::string type);
+    RPG(string name, int health, int streanght, int defense, string type);
 
     void setSkills();
-    void printAction(std::string action, RPG target);
+    void printAction(string, RPG);
     void updateHealth(int value);
-    //void attack(RPG target);
-    //void useSkill(RPG target);
+    //void attack(RPG *);
+    //void useSkill(RPG *);
     bool isAlive() const;
-    std::string getName() const;
+    string getName() const;
     int getHealth() const;
     int getStrength() const;
     int getDefense() const;
 
     private:
 
-    std::string name;
+    string name;
     int health;
     int strength;
     int defense;
 
-    std::string type; // warrior, mage, thief, archer
-    std::string skills[SKILL_SIZE];
+    string type; // warrior, mage, thief, archer
+    string skills[SKILL_SIZE];
 
 };
 #endif

@@ -3,7 +3,7 @@
 using namespace std;
 
 // Overloaded constructor
-RPG::RPG(std::string name, int health, int strength, int defense, std::string type) {
+RPG::RPG(string name, int health, int strength, int defense, string type) {
     this->name = name;
     this->health = health;
     this->strength = strength;
