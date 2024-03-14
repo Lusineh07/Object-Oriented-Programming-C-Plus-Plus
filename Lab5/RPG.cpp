@@ -9,17 +9,17 @@ RPG::RPG(string name, int health, int strength, int defense, string type) {
     this->strength = strength;
     this->defense = defense;
     this->type = type;
+    setSkills();
 }
 
 // Default constructor
 RPG::RPG() {
     name = "NPC";
     health = 100;
-    strength = 10;
-    defense = 10;
+    strength = 15;
+    defense = 5;
     type = "warrior";
-    skills[0] = "slash";
-    skills[1] = "parry";
+    setSkills();
 }
 string RPG::getName() const{
     return name;
@@ -56,6 +56,52 @@ void RPG::setSkills() {
 
 void RPG::updateHealth(int new_health) {
     health = new_health;
+}
+
+void RPG::attack(RPG * opponent){
+    int opp_health = (*opponent).getHealth();
+    int opp_def = (*opponent).getDefense();
+
+    int new_health;
+    if (strength - opp_def > 0 ){
+        new_health = opp_health - (strength - opp_def);
+    } else{
+        new_health = opp_health - 0;
+    }
+
+    (*opponent).updateHealth(new_health);
+}
+
+void RPG::useSkill(RPG * opponent){
+    for(int i = 0; i < SKILL_SIZE; i++){
+        printf("Skill %i: %s\n", i, skills[i].c_str());
+    }
+    int chosen_skill_index;
+    printf("Choose a skill to use: Enter 0 or 1\n");
+    cin >> chosen_skill_index;
+
+    // printf("Error1\n");
+
+    // switch (chosen_skill_index){
+    // case 0:
+    // case 1:
+    //     printf("Correct!");
+    //     break;
+    // default:
+    //     printf("Wrong input!");
+    //     break;
+    // }
+    // printf("Error2\n");
+
+    string chosen_skill = skills [chosen_skill_index];
+    //printf("Error3\n");
+
+    printAction (chosen_skill, (*opponent));
+    //printf("Error4\n");
+
+    attack(opponent);
+    //printf("Error5\n");
+
 }
 
 bool RPG::isAlive() const {
