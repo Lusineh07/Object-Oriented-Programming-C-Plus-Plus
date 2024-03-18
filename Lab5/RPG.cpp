@@ -1,13 +1,15 @@
 #include "RPG.h"
 #include <iostream> 
+#include <cctype>
+#include <cmath>
 using namespace std;
 
 // Overloaded constructor
 RPG::RPG(string name, int health, int strength, int defense, string type) {
     this->name = name;
-    this->health = health;
-    this->strength = strength;
-    this->defense = defense;
+    this->health = abs(health);
+    this->strength = abs(strength);
+    this->defense = abs(defense);
     this->type = type;
     setSkills();
 }
@@ -73,15 +75,36 @@ void RPG::attack(RPG * opponent){
 }
 
 void RPG::useSkill(RPG * opponent){
+
     for(int i = 0; i < SKILL_SIZE; i++){
         printf("Skill %i: %s\n", i, skills[i].c_str());
     }
+
     int chosen_skill_index;
-    printf("Choose a skill to use: Enter 0 or 1\n");
-    cin >> chosen_skill_index;
+    int wrong_input_count = 0;
+
+    printf("Choose a skill to use. Enter 0 or 1: ");
+
+    while(true){
+        cin >> chosen_skill_index;
+        if (cin.fail() || (chosen_skill_index != 0 && chosen_skill_index != 1)) {
+            wrong_input_count++;
+
+            if (wrong_input_count == 3){
+                cout << "You have entered wrong input 3 TIMES! -_- Exiting...\n";
+                exit(0);
+            }
+            cout << "Invalid input. Please choose 0 or 1: ";
+            cin.clear();
+            cin.ignore();
+
+        } else {
+            wrong_input_count = 0;
+            break;
+        }
+    }
 
     // printf("Error1\n");
-
     // switch (chosen_skill_index){
     // case 0:
     // case 1:
