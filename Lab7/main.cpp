@@ -33,11 +33,16 @@ void readFile(string filename){
     ifstream file(filename);
     string val;
     if(file.is_open()) { 
-        while (file.good()){
+        // while (file.good()){
+        //     file >> val;
+        //     cout << val << "\n";
+        // }
+        while (!file.eof()){
             file >> val;
-            cout << val;
+            if (!file.eof()) {
+                cout << val << "\n";
+            }
         }
-        cout << "\n";
     }
     file.close ();
     printf ("Read and wrote from %s\n", filename.c_str());
@@ -62,7 +67,6 @@ int main(){
     writeToFile(char_file, array_char, SAMPLE_SIZE);
 
     readFile(char_file);
-
 
     return 0;
 }
