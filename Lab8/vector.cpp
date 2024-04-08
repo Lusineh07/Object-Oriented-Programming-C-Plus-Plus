@@ -2,43 +2,46 @@
 #include <vector>
 using namespace std;
 
-/**
-* @brief prints the elements in the array and their memory locations
-*
-* @param arr - array of integers
-* @param size - the number of elements in the array
-*/
-
-void printMemArr(vector<int> v){
-    printf ("Array - Each int is worth %lu bytes\n", sizeof(v [0]));
-    // for(int i = 0; i < v; i++) {
-    //     printf("Value :%i at Memory Location: %p\n", v[i], v + i);
-    // } 
+void printMemVec(vector<int> v){
+    printf ("Vector - Each int is worth %lu bytes\n", sizeof(v[0]));
+    for(int i = 0; i < v.size(); i++) {
+        printf("Value :%i at Memory Location: %p\n", v[i], &v + i);
+    } 
 }
 
 /**
-* @brief increments all of the elements in arr by 10
+* @brief increments all of the elements in vec by 10
 *
-* @param arr - array of integers
-* @param size - the number of elements in the array
+* @param 
+* @param
 */
 
-void incArrBy10(vector<int>  & v){
-    // for(int i = 0; i < v(); i++) {
-    //     v[i] += 10;
-    // }
+void incArrBy10(vector<int> & v){
+    for(int i = 0; i < v.size(); i++) {
+        v[i] += 10;
+    }
 }
 
 int main(){
-    // const int SIZE = 5;
-    // int arr [SIZE];
-    // for(int i = 0; i < SIZE; i ++) {
-    //     arr[i] = 100 + i;
-    // }
-    // printf("Before --------------------------------------\n");
-    // printMemArr(arr, SIZE);
-    // incArrBy10 (arr, SIZE);
-    // printf("After ---------------------------------------\n");
-    // printMemArr(arr, SIZE);
+    const int SIZE = 5;
+    vector<int> vec;
+    for(int i = 0; i < SIZE; i ++) {
+        vec.push_back(100 + i);
+    }
+    printf("Before --------------------------------------\n");
+    printMemVec(vec);
+
+    incArrBy10 (vec);
+    printf("After ---------------------------------------\n");
+    printMemVec(vec);
+
+    vec.pop_back();
+    printf("After pop ---------------------------------------\n");
+    printMemVec(vec);
+
+    vec.push_back(101);
+    printf("After push ---------------------------------------\n");
+    printMemVec(vec);
+
     return 0;
 }
