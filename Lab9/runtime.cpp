@@ -83,76 +83,130 @@ void vecGen(string filename, vector<int> & v) {
     file.close();
 }
 
-int main () {
-    // populate v with 10000 sorted numbers (leave as is)
-    vector<int> v;
-    vecGen("10000_numbers.csv", v);
+/**
+*
+** @brief writes to file the time it took to search with respect to the
+*  size of the vector, n
+*  Number of Elements (n)               Time (sec)
+    XXXX                                 X. XXXXX
+    XXXX                                 X. XXXXX
+*  @param filename (string) : filename (e.g. output_10000 _numbers. csv)
+*  @param times (vector<double>) : average times
+*  @param n (vector<int>) : sizes of vectors
+*/
 
-    // test elements to search for (leave as is)
+void writeTimes(string filename, const vector<double> times, const vector<int> n){
+    ofstream myFile(filename);
+
+    myFile << "Number of Elements (n)\t Time (sec) " << endl;
+    for(int i = 0; i < times.size(); i++){
+        myFile << n[i] << "\t" << times [i] << "\n";
+    }
+    myFile.close();
+    cout << "Wrote to " << filename << endl;
+}
+
+/**
+* @brief computes the average of the elements in vector, a
+*
+* @param a vector of double
+* @return double
+*/
+
+double average (const vector<double> a) {
+
+    double sum = 0;
+    for (int i = 0; i < a.size(); i++) {
+        double val = a[i];
+        sum += val;
+    }
+    return sum / a.size();
+}
+
+int main () {
+    // test elements to search for 
     vector<int> elem_to_find;
     vecGen("test_elem.csv", elem_to_find);
+    // size (n) of all tests
+    vector<int> file_size;
+    vecGen("sizes.csv", file_size);
 
-    double total_elapsed_time_iterative = 0.0;
-    double total_elapsed_time_binary = 0.0;
+    // n list of numbers
+    vector<int> v;
 
-    // reads through all 10 of the test_elem values and calls iterative search
-    // and records how long each search took (leave as is)
-    for(int i = 0; i < elem_to_find.size(); i++) {
-        // gets the elem to search for
-        int elem = elem_to_find[i];
+    // results of times
+    vector<double> times;
 
-        // stopwatches the time
-        clock_t start = clock();                            // start time
-        int index_if_found = iterativeSearch(v, elem);      // call search
-        clock_t end = clock();                              // end time
+    // results of avg
+    vector<double> avg;
 
-        // calculates the total time it took in seconds
-        double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
+    // create a for loop to iterate through the file sizes
+    for(int i = 0; i < file_size.size(); i++) {
+        // get the name/size of the file and assign it to string called filename
+        string filename = to_string(file_size[i]) + "_numbers.csv";
 
-        // for average time
-        total_elapsed_time_iterative += elapsed_time_in_sec;
-        //prints the index and how long it took to find it 
-        if(index_if_found != -1) {
-        cout << "Iterative Search: Element " << elem << " found at index " << index_if_found << " in " << elapsed_time_in_sec << " seconds." << endl;
-        } else {
-            cout << "Iterative Search: Element " << elem << " not found in " << elapsed_time_in_sec << " seconds." << endl;
+        //call vecGen on filename and v
+        vecGen(filename, v);
+
+        // print filename (this will be good for debugging)
+        cout << "Reading file: " << filename << endl;
+
+        // call times.clear() // this ensures that we reset times every time we read a new file
+        times.clear();
+
+        // create another for loop to iterate through all the elements from elem_to_find.
+        // the code here should be nearly identical to the code from the previous lab
+        for(int j = 0; j < elem_to_find.size(); j++) {
+            // append the elapsed_time_in_sec to the vector, times (hint: push_back()) 
+            // This code should be within the for loop that iterates
+            // through all the elements from elem_to_find
+            clock_t start_time = clock();
+            iterativeSearch(v, elem_to_find[j]);
+            clock_t end_time = clock();
+            double elapsed_time_in_sec = double(end_time - start_time) / CLOCKS_PER_SEC;
+            times.push_back(elapsed_time_in_sec);
         }
+
+        // call average on the vector, times, and save it as a double. This code should be 
+        // outside the for loop that iterates through all the elements from elem_to_find
+        // but within the for loop that iterates through the file sizes
+        double average_time = average(times);
+
+        // append the double to avg. (hint: push_back())
+        // This code should be outside the for loop that iterates through
+        // all the elements from elem_to_find
+        // but within the for loop that iterates through the file sizes
+        avg.push_back(average_time);
     }
 
-    // repeat the for loop above so that it records the time
+    //outside both for loops call writeTimes with the appropriate parameters 
+    // the first parameter should be "iterativeSearch_times.csv"
+    // read the function brief to complete the rest of the parameters
+    writeTimes("iterativeSearch_times.csv", avg, file_size);
 
-    // it takes for binarySearch to do the same operation
-    // reads through all 10 of the test_elem values and calls iterative search
-    // and records how long each search took (leave as is)
-    for(int i = 0; i < elem_to_find.size(); i++) {
-        // gets the elem to search for
-        int elem = elem_to_find[i];
+    // call avg. clear() to reset avg, so we can use it for binarySearch
+    avg.clear();
 
-        // stopwatches the time
-        clock_t start = clock();                                         // start time
-        int index_if_found = binarySearch (v, 0, v.size() - 1, elem);    // call search
-        clock_t end = clock();                                           // end time
-
-        // calculates the total time it took in seconds
-        double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
-        // for average time
-        total_elapsed_time_binary += elapsed_time_in_sec;
-
-
-        //prints the index and how long it took to find it 
-        if(index_if_found != -1) {
-        cout << "Binary Search: Element " << elem << " found at index " << index_if_found << " in " << elapsed_time_in_sec << " seconds." << endl;
-        } else {
-            cout << "Binary Search: Element " << elem << " not found in " << elapsed_time_in_sec << " seconds." << endl;
+    // repeat the nested for loops used for iterativeSearch, but call binarySearch instead
+    for(int i = 0; i < file_size.size(); i++) {
+        string filename = to_string(file_size[i]) + "_numbers.csv";
+        vecGen(filename, v);
+        cout << "Reading file: " << filename << endl;
+        times.clear();
+        for(int j = 0; j < elem_to_find.size(); j++) {
+            clock_t start_time = clock();
+            binarySearch(v, 0, v.size() - 1, elem_to_find[j]);
+            clock_t end_time = clock();
+            double elapsed_time_in_sec = double(end_time - start_time) / CLOCKS_PER_SEC;
+            times.push_back(elapsed_time_in_sec);
         }
+        double average_time = average(times);
+        avg.push_back(average_time);
     }
-    
-    double average_time_iterative = total_elapsed_time_iterative / elem_to_find.size();
-    double average_time_binary = total_elapsed_time_binary / elem_to_find.size();
-    double speedup = average_time_iterative / average_time_binary;
 
-    cout << "Average Time for Iterative Search: " << average_time_iterative << " seconds." << endl;
-    cout << "Average Time for Binary Search: " << average_time_binary << " seconds." << endl;
-    cout << "Speedup: " << speedup << endl;
+    //outside both for loops call writeTimes with the appropriate parameters
+    // the first parameter should be "binarySearch_times.csv"
+    // read the function brief to complete the rest of the parameters
+    writeTimes("binarySearch_times.csv", avg, file_size);
 }
 

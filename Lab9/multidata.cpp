@@ -13,7 +13,8 @@ using namespace std;
 * @param elem: integer to look for
 * @return int
 */
-int iterativeSearch(vector<int>v, int elem) {
+template<typename T>
+int iterativeSearch(vector<T>v, int elem) {
     // use a for loop where the index, i goes from 0 to the size of v
     // inside the for loop, use an if statement to check whether the element at i (e.g. v[i]) equals elem
     // inside the if statement return i
@@ -43,8 +44,8 @@ int iterativeSearch(vector<int>v, int elem) {
 * @param elem : integer to look for
 * @return int
 */
-
-int binarySearch (vector<int> & v, int start, int end, int elem){
+template<typename T>
+int binarySearch (vector<T> & v, int start, int end, int elem){
     //write an if statement that checks the terminating case 
     //inside the if statement return -1
     if (start > end) {
@@ -73,9 +74,10 @@ int binarySearch (vector<int> & v, int start, int end, int elem){
 * @param filename : string
 * @param v :vector
 */
-void vecGen(string filename, vector<int> & v) {
+template<typename T>
+void vecGen(string filename, vector<T> & v) {
     ifstream file(filename);
-    int num;
+    T num;
     v.clear();
     while (file.is_open() && file >> num) {
         v.push_back(num);
@@ -83,12 +85,52 @@ void vecGen(string filename, vector<int> & v) {
     file.close();
 }
 
+/**
+*
+** @brief writes to file the time it took to search with respect to the
+*  size of the vector, n
+*  Number of Elements (n)               Time (sec)
+    XXXX                                 X. XXXXX
+    XXXX                                 X. XXXXX
+*  @param filename (string) : filename (e.g. output_10000 _numbers. csv)
+*  @param times (vector<double>) : average times
+*  @param n (vector<int>) : sizes of vectors
+*/
+
+void writeTimes(string filename, const vector<double> times, const vector<int> n){
+    ofstream myFile(filename);
+
+    myFile << "Number of Elements (n)\t Time (sec) " << endl;
+    for(int i = 0; i < times.size(); i++){
+        myFile << n[i] << "\t" << times [i] << "\n";
+    }
+    myFile.close();
+    cout << "Wrote to " << filename << endl;
+}
+
+/**
+* @brief computes the average of the elements in vector, a
+*
+* @param a vector of double
+* @return double
+*/
+
+double average (const vector<double> a) {
+
+    double sum = 0;
+    for (int i = 0; i < a.size(); i++) {
+        double val = a[i];
+        sum += val;
+    }
+    return sum / a.size();
+}
+
 int main () {
-    // populate v with 10000 sorted numbers (leave as is)
+    // populate v with 10000 sorted numbers 
     vector<int> v;
     vecGen("10000_numbers.csv", v);
 
-    // test elements to search for (leave as is)
+    // test elements to search for
     vector<int> elem_to_find;
     vecGen("test_elem.csv", elem_to_find);
 
@@ -119,6 +161,10 @@ int main () {
         }
     }
 
+    vector<double> d;
+    vecGen ("1000_double. csv", d);
+    vector<double> double_to_find;
+    vecGen ("double_to_find.csv", double_to_find);
     // repeat the for loop above so that it records the time
 
     // it takes for binarySearch to do the same operation
@@ -155,4 +201,3 @@ int main () {
     cout << "Average Time for Binary Search: " << average_time_binary << " seconds." << endl;
     cout << "Speedup: " << speedup << endl;
 }
-

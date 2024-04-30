@@ -84,11 +84,11 @@ void vecGen(string filename, vector<int> & v) {
 }
 
 int main () {
-    // populate v with 10000 sorted numbers (leave as is)
+    // populate v with 10000 sorted numbers 
     vector<int> v;
     vecGen("10000_numbers.csv", v);
 
-    // test elements to search for (leave as is)
+    // test elements to search for
     vector<int> elem_to_find;
     vecGen("test_elem.csv", elem_to_find);
 
