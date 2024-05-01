@@ -45,7 +45,7 @@ int iterativeSearch(vector<T>v, int elem) {
 * @return int
 */
 template<typename T>
-int binarySearch (vector<T> & v, int start, int end, int elem){
+int binarySearch (vector<T> & v, int start, int end, const T& elem){
     //write an if statement that checks the terminating case 
     //inside the if statement return -1
     if (start > end) {
@@ -162,7 +162,7 @@ int main () {
     }
 
     vector<double> d;
-    vecGen ("1000_double. csv", d);
+    vecGen ("1000_double.csv", d);
     vector<double> double_to_find;
     vecGen ("double_to_find.csv", double_to_find);
     // repeat the for loop above so that it records the time
@@ -170,13 +170,13 @@ int main () {
     // it takes for binarySearch to do the same operation
     // reads through all 10 of the test_elem values and calls iterative search
     // and records how long each search took (leave as is)
-    for(int i = 0; i < elem_to_find.size(); i++) {
+    for(int i = 0; i < double_to_find.size(); i++) {
         // gets the elem to search for
-        int elem = elem_to_find[i];
+        double elem = double_to_find[i];
 
         // stopwatches the time
         clock_t start = clock();                                         // start time
-        int index_if_found = binarySearch (v, 0, v.size() - 1, elem);    // call search
+        int index_if_found = binarySearch(d, 0, d.size() - 1, elem);    // call search
         clock_t end = clock();                                           // end time
 
         // calculates the total time it took in seconds
