@@ -148,10 +148,10 @@ int main () {
         //call vecGen on filename and v
         vecGen(filename, v);
 
-        // print filename (this will be good for debugging)
+        // print filename (good for debugging)
         cout << "Reading file: " << filename << endl;
 
-        // call times.clear() // this ensures that we reset times every time we read a new file
+        // this ensures that we reset times every time we read a new file
         times.clear();
 
         // create another for loop to iterate through all the elements from elem_to_find.
