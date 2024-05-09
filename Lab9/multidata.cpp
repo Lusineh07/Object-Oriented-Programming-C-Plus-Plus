@@ -51,18 +51,43 @@ int binarySearch (vector<T> & v, int start, int end, const T& elem){
     if (start > end) {
         return -1;
     }
-    // instantiate the midpoint
-    int mid = (start + end) / 2;    
-    // Use if/else statements to do the following:
-    if (v[mid] > elem){         // 1) update end (search left half)
-        end = mid - 1;            
-    } else if (v[mid] < elem){  // 2) update start (search right half)
-        start = mid + 1;
-    }else {                       // 3) return mid (found the elem)
-        return mid;
+    // // instantiate the midpoint
+    // int mid = (start + end) / 2;    
+    // // Use if/else statements to do the following:
+    // if (v[mid] > elem){         // 1) update end (search left half)
+    //     end = mid - 1;            
+    // } else if (v[mid] < elem){  // 2) update start (search right half)
+    //     start = mid + 1;
+    // }else {                       // 3) return mid (found the elem)
+    //     return mid;
+    // }
+    // // return a recursive call to binarySearch(...)
+    // return binarySearch (v, start, end, elem);
+
+    int mid = (start + end) / 2;
+    int len = elem.length();
+    int midLen = v[mid].length();
+    int minLen = min(len, midLen); 
+
+    for (int i = 0; i < minLen; i++) {
+        if (v[mid][i] < elem[i]) {
+            start = mid + 1;
+            break;
+        } else if (v[mid][i] > elem[i]) {
+            end = mid - 1;
+            break;
+        }
+        if (i == minLen - 1) {
+            if (len < midLen) {
+                return -1;
+            } else if (len > midLen) {
+                start = mid + 1;
+            } else {
+                return mid; 
+            }
+        }
     }
-    // return a recursive call to binarySearch(...)
-    return binarySearch (v, start, end, elem);
+    return binarySearch(v, start, end, elem);
 }
 
 /**
@@ -161,10 +186,9 @@ int main () {
         }
     }
 
-    // Define the vector of strings
     vector<string> strings;
 
-    // Add strings to the vector
+    // Adding strings to vector
     strings.push_back("Al");
     strings.push_back("Be");
     strings.push_back("Bea");
@@ -175,15 +199,19 @@ int main () {
     // String to find
     string target = "Bob";
 
-    // Perform binary search
-    cout << "Searching for '" << target <<  " : ";
-    int index = binarySearch(strings, 0, strings.size() - 1, target);
-    if (index != -1) {
-        cout << "'" << target << "' found at index " << index << endl;
+    clock_t start = clock();
+
+    cout << "Searching for '" << target <<  endl;
+    int index_if_found  = binarySearch(strings, 0, strings.size() - 1, target);
+
+    clock_t end = clock();
+    double elapsed_time_in_sec = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+
+    if(index_if_found != -1) {
+        cout << "Binary Search: Element " << target << " found at index " << index_if_found << " in " << elapsed_time_in_sec << " seconds." << endl;
     } else {
-        cout << "'" << target << "' not found in strings" << endl;
+        cout << "Binary Search: Element " << target << " not found in " << elapsed_time_in_sec << " seconds." << endl;
     }
-    
 
     // vector<double> d;
     // vecGen ("1000_double.csv", d);
