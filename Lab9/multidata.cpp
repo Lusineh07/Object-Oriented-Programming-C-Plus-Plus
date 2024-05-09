@@ -161,43 +161,67 @@ int main () {
         }
     }
 
-    vector<double> d;
-    vecGen ("1000_double.csv", d);
-    vector<double> double_to_find;
-    vecGen ("double_to_find.csv", double_to_find);
-    // repeat the for loop above so that it records the time
+    // Define the vector of strings
+    vector<string> strings;
 
-    // it takes for binarySearch to do the same operation
-    // reads through all 10 of the test_elem values and calls iterative search
-    // and records how long each search took (leave as is)
-    for(int i = 0; i < double_to_find.size(); i++) {
-        // gets the elem to search for
-        double elem = double_to_find[i];
+    // Add strings to the vector
+    strings.push_back("Al");
+    strings.push_back("Be");
+    strings.push_back("Bea");
+    strings.push_back("Bob");
+    strings.push_back("Cat");
+    strings.push_back("Ci");
 
-        // stopwatches the time
-        clock_t start = clock();                                         // start time
-        int index_if_found = binarySearch(d, 0, d.size() - 1, elem);    // call search
-        clock_t end = clock();                                           // end time
+    // String to find
+    string target = "Bob";
 
-        // calculates the total time it took in seconds
-        double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
-        // for average time
-        total_elapsed_time_binary += elapsed_time_in_sec;
-
-
-        //prints the index and how long it took to find it 
-        if(index_if_found != -1) {
-        cout << "Binary Search: Element " << elem << " found at index " << index_if_found << " in " << elapsed_time_in_sec << " seconds." << endl;
-        } else {
-            cout << "Binary Search: Element " << elem << " not found in " << elapsed_time_in_sec << " seconds." << endl;
-        }
+    // Perform binary search
+    cout << "Searching for '" << target <<  " : ";
+    int index = binarySearch(strings, 0, strings.size() - 1, target);
+    if (index != -1) {
+        cout << "'" << target << "' found at index " << index << endl;
+    } else {
+        cout << "'" << target << "' not found in strings" << endl;
     }
     
-    double average_time_iterative = total_elapsed_time_iterative / elem_to_find.size();
-    double average_time_binary = total_elapsed_time_binary / elem_to_find.size();
-    double speedup = average_time_iterative / average_time_binary;
 
-    cout << "Average Time for Iterative Search: " << average_time_iterative << " seconds." << endl;
-    cout << "Average Time for Binary Search: " << average_time_binary << " seconds." << endl;
-    cout << "Speedup: " << speedup << endl;
+    // vector<double> d;
+    // vecGen ("1000_double.csv", d);
+    // vector<double> double_to_find;
+    // vecGen ("double_to_find.csv", double_to_find);
+    // // repeat the for loop above so that it records the time
+
+    // // it takes for binarySearch to do the same operation
+    // // reads through all 10 of the test_elem values and calls iterative search
+    // // and records how long each search took (leave as is)
+    // for(int i = 0; i < double_to_find.size(); i++) {
+    //     // gets the elem to search for
+    //     double elem = double_to_find[i];
+
+    //     // stopwatches the time
+    //     clock_t start = clock();                                         // start time
+    //     int index_if_found = binarySearch(d, 0, d.size() - 1, elem);    // call search
+    //     clock_t end = clock();                                           // end time
+
+    //     // calculates the total time it took in seconds
+    //     double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
+    //     // for average time
+    //     total_elapsed_time_binary += elapsed_time_in_sec;
+
+
+    //     //prints the index and how long it took to find it 
+    //     if(index_if_found != -1) {
+    //     cout << "Binary Search: Element " << elem << " found at index " << index_if_found << " in " << elapsed_time_in_sec << " seconds." << endl;
+    //     } else {
+    //         cout << "Binary Search: Element " << elem << " not found in " << elapsed_time_in_sec << " seconds." << endl;
+    //     }
+    // }
+    
+    // double average_time_iterative = total_elapsed_time_iterative / elem_to_find.size();
+    // double average_time_binary = total_elapsed_time_binary / elem_to_find.size();
+    // double speedup = average_time_iterative / average_time_binary;
+
+    // cout << "Average Time for Iterative Search: " << average_time_iterative << " seconds." << endl;
+    // cout << "Average Time for Binary Search: " << average_time_binary << " seconds." << endl;
+    // cout << "Speedup: " << speedup << endl;
 }
